@@ -107,6 +107,13 @@ class ViewController {
 
   private readonly messagesListener: MessagesListener = (event) => {
     switch (event.data.event) {
+      case 'start_round': {
+        this.gc.prepare()
+        this.gc.setPhasePrepare()
+        this.startListeners()
+        break
+      }
+
       case 'prepare': {
         this.gc.prepare()
         break

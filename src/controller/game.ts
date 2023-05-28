@@ -16,6 +16,7 @@ export class GameController {
   private readonly map = new Map()
 
   private _phase: Phase | null = null
+  private moves: number
 
   constructor(
     private readonly board: BoardController,
@@ -26,6 +27,7 @@ export class GameController {
   ) {
     // hide after initial
     this.arrows.hide()
+    this.moves = 0
   }
 
   /** prepare board for new game */
@@ -122,6 +124,7 @@ export class GameController {
           this.arrows.visibleByDirection(
             this.robotDirection(this.selectedRobot)
           )
+          this.moves = this.moves + 1
 
           if (this.tc.target && this.validateWin(this.selectedRobot, this.tc.target)) {
             this.mc.postMessage({

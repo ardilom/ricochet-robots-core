@@ -3,7 +3,7 @@ import { Arrow } from "../models/arrow";
 import { Robot } from "../models/robot";
 import { Direction } from "../types/direction";
 
-const GAP = 0.17
+const GAP = 0.13
 
 export class ArrowsController extends Group {
   constructor(arrow: Arrow) {    

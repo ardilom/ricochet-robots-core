@@ -19,6 +19,10 @@ export type CommitStateMessage = {
   state: State
 }
 
+type StartRoundStateMessage = {
+  event: 'start_round'
+}
+
 type RestoreStateMessage = {
   event: 'restore_state',
   state: State
@@ -47,3 +51,4 @@ export type Message =
     | CommitStateMessage
     | RestoreStateMessage
     | EndGameMessage
+    | StartRoundStateMessage
