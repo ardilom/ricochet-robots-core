@@ -9,43 +9,52 @@ import { BoardController } from "./board";
 import { ArrowsController } from "./arrows";
 import { TokensController } from "./round";
 import { MessagesController } from "./messages";
-import { State } from "../models/state";
 import { Phase } from "../types/phase";
 
 export class GameController {
   private readonly map = new Map()
 
   private _phase: Phase | null = null
-  private moves: number
+  private _initialPositions: Vec2[]
+  public moves: number
 
   constructor(
     private readonly board: BoardController,
     private readonly robots: RobotsController,
     private readonly arrows: ArrowsController,
     private readonly tc: TokensController,
-    private readonly mc: MessagesController,
+    private readonly mc: MessagesController
   ) {
     // hide after initial
     this.arrows.hide()
     this.moves = 0
+    this._initialPositions = this.generatePositions()
   }
 
   /** prepare board for new game */
   public prepare() {
     // prepare and place robots
-    const generatedPositions = this.generatePositions()
-    this.robots.forEach((robot, idx) => robot.moveTo(generatedPositions[idx]))
+    this.unselectRobot()
+    this.robots.forEach((robot, idx) => robot.moveTo(this._initialPositions[idx]))
     this.robots.show()
     // prepare tokens
     this.tc.prepare()
   }
 
+  /** prepare board for new game */
+  public resetRobots() {
+    this.moves = 0
+    this.prepare()
+  }
+
   /** prepare board for restored game */
-  public restoreState(state: State) {
-    // restore robots positions
-    this.robots.restore(state.robots)
-    // restore tokens
-    this.tc.restore(state)
+  public restoreState() {
+    this.unselectRobot()
+    this.robots.forEach((robot, idx) => robot.moveTo(this._initialPositions[idx]))
+    this.robots.show()
+    // prepare tokens
+    this.tc.prepare()
+    this.moves = 0
   }
 
   public showRobots() {
@@ -77,6 +86,7 @@ export class GameController {
   }
 
   public setNextToken(nextToken = this.tc.makeNextToken()) {
+    console.log(nextToken)
     if (!nextToken) {
       return this.mc.postMessage({
         event: 'end_game'

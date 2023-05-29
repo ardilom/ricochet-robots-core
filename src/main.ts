@@ -102,15 +102,31 @@ class ViewController {
 
         break
       }
+
+      case 'KeyN': {
+        this.mc.postMessage({
+          event: 'start_round'
+        })
+
+        break
+      }
+
+      case 'KeyR': {
+        this.mc.postMessage({
+          event: 'restore_state'
+        })
+
+        break
+      }
+
+      
     }
   }
 
   private readonly messagesListener: MessagesListener = (event) => {
     switch (event.data.event) {
       case 'start_round': {
-        this.gc.prepare()
         this.gc.setPhasePrepare()
-        this.startListeners()
         break
       }
 
@@ -120,7 +136,7 @@ class ViewController {
       }
 
       case 'restore_state': {
-        this.gc.restoreState(event.data.state)
+        this.gc.restoreState()
         break
       }
 
@@ -152,7 +168,7 @@ class ViewController {
 
           case 'target_failed':
           case 'target_reached': {
-            this.cancelListeners()
+            console.log("Moves Done:", this.gc.moves)
             break
           }
 
@@ -203,6 +219,8 @@ class ViewController {
     document.body.append(this.notationsRenderer.domElement)
     // start rendering
     this.renderer.setAnimationLoop(animate)
+    this.startListeners()
+    this.gc.prepare()
   }
 
   private prepareScene() {
@@ -254,13 +272,13 @@ class ViewController {
     this.renderer.domElement.addEventListener('click', this.clickListener)
   }
 
-  private cancelListeners() {
-    // remove keypress listener
-    window.removeEventListener('keyup', this.keyupListener)
-    // remove click listener
-    this.renderer.domElement.removeEventListener('click', this.clickListener)
-    this.handleMissClick()
-  }
+  //private cancelListeners() {
+  //  // remove keypress listener
+  //  window.removeEventListener('keyup', this.keyupListener)
+  //  // remove click listener
+  //  this.renderer.domElement.removeEventListener('click', this.clickListener)
+  //  this.handleMissClick()
+  //}
 }
 
 async function main() {

@@ -24,8 +24,7 @@ type StartRoundStateMessage = {
 }
 
 type RestoreStateMessage = {
-  event: 'restore_state',
-  state: State
+  event: 'restore_state'
 }
 
 export type ChangePhaseMessage = {
