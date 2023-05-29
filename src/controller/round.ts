@@ -13,7 +13,6 @@ export class TokensController implements IState<Omit<State, 'robots'>> {
   }
 
   public makeNextToken(): BoardToken | null {
-    console.log(this._tokens)
     const nextToken = this._tokens.pop() || null
 
     this._target = nextToken

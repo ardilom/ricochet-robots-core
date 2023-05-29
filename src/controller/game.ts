@@ -86,7 +86,6 @@ export class GameController {
   }
 
   public setNextToken(nextToken = this.tc.makeNextToken()) {
-    console.log(nextToken)
     if (!nextToken) {
       return this.mc.postMessage({
         event: 'end_game'
